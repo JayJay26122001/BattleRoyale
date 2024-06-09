@@ -29,14 +29,11 @@ public class Skill : MonoBehaviour
 
     public void Activate()
     {
-        if (unlocked)
+        active = true;
+        action.Invoke();
+        foreach(Skill child in children)
         {
-            active = true;
-            action.Invoke();
-            foreach(Skill child in children)
-            {
-                child.unlocked = true;
-            }
+            child.unlocked = true;
         }
     }
 

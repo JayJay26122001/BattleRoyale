@@ -212,7 +212,14 @@ public class Player : Racer
         }
         if (collision.gameObject.tag == "Win")
         {
-            GameManager.manager.uiController.ChangeScene("Victory");
+            if(race.GetPlayerPos(this) < 3)
+            {
+                GameManager.manager.uiController.ChangeScene("CarLevel");
+            }
+            else
+            {
+                GameManager.manager.uiController.ChangeScene("Defeat");
+            }
         }
     }
 

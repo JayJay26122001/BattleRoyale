@@ -21,8 +21,23 @@ public class SkillTree : MonoBehaviour
     {
         if(points >= tree[index].price)
         {
-            points -= tree[index].price;
-            tree[index].Activate();
+            if(!tree[index].Active && tree[index].Unlocked)
+            {
+                points -= tree[index].price;
+                tree[index].Activate();
+            }
+            else if(!tree[index].Unlocked)
+            {
+                GameManager.manager.uiController.CantBuy("You can´t unlock this skill yet!");
+            }
+            else
+            {
+                GameManager.manager.uiController.CantBuy("You already have the skill!");
+            }
+        }
+        else
+        {
+            GameManager.manager.uiController.CantBuy("No points to buy this skill!");
         }
     }
 }

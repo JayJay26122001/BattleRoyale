@@ -49,6 +49,7 @@ public class Race : MonoBehaviour
             }
             Colocations.Add(contestants[indice]);
         }
+        GameManager.manager.uiController.ColocationsHud(Colocations);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -58,5 +59,18 @@ public class Race : MonoBehaviour
             RaceActive = false;
             raceEnd.Invoke();
         }
+    }
+    
+    public int GetPlayerPos(Racer player)
+    {
+        int i;
+        for(i = 0; i < Colocations.Count; i++)
+        {
+            if(player.name == Colocations[i].name)
+            {
+                break;
+            }
+        }
+        return i;
     }
 }

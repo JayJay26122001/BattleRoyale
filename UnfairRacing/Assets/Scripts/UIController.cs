@@ -3,19 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIController : MonoBehaviour
 {
     public Slider _musicSlider, _sfxSlider;
     public Button _mute;
     public Image _muteOn, _muteOff;
+    public List<TextMeshProUGUI> playerColocations;
+    public TextMeshProUGUI errorText;
 
     private void Start()
     {
-        _musicSlider.value = AudioManager.instance.musicSource.volume;
-        _sfxSlider.value = AudioManager.instance.sfxSource.volume;
-        _muteOn.gameObject.SetActive(false);
-        _muteOff.gameObject.SetActive(true);
+        if (_musicSlider != null)
+        {
+            _musicSlider.value = AudioManager.instance.musicSource.volume;
+        }
+        if(_sfxSlider != null)
+        {
+            _sfxSlider.value = AudioManager.instance.sfxSource.volume;
+        }
+        if(_muteOn != null)
+        {
+            _muteOn.gameObject.SetActive(false);
+        }
+        if(_muteOff != null)
+        {
+            _muteOff.gameObject.SetActive(true);
+        }
         GameManager.manager.uiController = this;
     }
 
@@ -37,11 +52,13 @@ public class UIController : MonoBehaviour
     public void OpenPanel(GameObject panel)
     {
         panel.SetActive(true);
+        Time.timeScale = 0;
     }
 
     public void ClosePanel(GameObject panel)
     {
         panel.SetActive(false);
+        Time.timeScale = 1;
     }
 
     public void ToggleMusicAndSoundEffects()
@@ -71,5 +88,29 @@ public class UIController : MonoBehaviour
             _muteOn.gameObject.SetActive(false);
             _muteOff.gameObject.SetActive(true);
         }
+    }
+
+    public void CantBuy(string message)
+    {
+        errorText.text = message;
+        Invoke("ClearError", 3f);
+    }
+
+    public void ClearError()
+    {
+        errorText.text = "";
+    }
+
+    public void ColocationsHud(List<Racer> Colocations)
+    {
+        for(int i = 0; i < Colocations.Count; i++)
+        {
+            playerColocations[i].text = (i + 1) + " : " + Colocations[i].name;
+        }
+    }
+
+    public void ChangeButtonColor(GameObject button)
+    {
+        button.GetComponent<Image>().color = new Color32(0, 125, 0, 255);
     }
 }

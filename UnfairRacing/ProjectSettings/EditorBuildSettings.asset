@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Game.unity
     guid: 9bbb8380130027a4386f4144eb43c32c
   - enabled: 1
+    path: Assets/Scenes/CarLevel.unity
+    guid: 2e165ea664a39c040846e57b36c14ba2
+  - enabled: 1
     path: Assets/Scenes/Victory.unity
     guid: 24df73a5d8d50634ea9c0c67464b8fb9
   - enabled: 1

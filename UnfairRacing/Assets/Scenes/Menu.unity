@@ -539,6 +539,8 @@ MonoBehaviour:
   _mute: {fileID: 1233753474}
   _muteOn: {fileID: 1683967963}
   _muteOff: {fileID: 338173010}
+  playerColocations: []
+  errorText: {fileID: 0}
 --- !u!1 &182264825
 GameObject:
   m_ObjectHideFlags: 0
@@ -2638,7 +2640,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b8b9abd6975fa243bce4d9b978422c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiController: {fileID: 154651998}
+  uiController: {fileID: 0}
 --- !u!4 &1005964732
 Transform:
   m_ObjectHideFlags: 0

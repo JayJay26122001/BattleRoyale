@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Car : MonoBehaviour
+public class Car : Racer
 {
     public float motorTorque = 2000;
     public float brakeTorque = 500;
@@ -19,74 +19,80 @@ public class Car : MonoBehaviour
     public bool canTurbo;
     public bool turboCooldown;
 
+    public bool canMove;
+
     public Wheel[] wheels;
     Rigidbody rb;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass += Vector3.up * centreOfGravityOffset;
+        canMove = false;
     }
 
     void Update()
     {
-        if(playerCar)
+        if(canMove)
         {
-            float vInput = Input.GetAxis("Vertical");
-            float hInput = Input.GetAxis("Horizontal");
-            float forwardSpeed = Vector3.Dot(transform.forward, rb.velocity);
-            float speedFactor = Mathf.InverseLerp(0, maxSpeed, forwardSpeed);
-            float currentMotorTorque = Mathf.Lerp(motorTorque, 0, speedFactor);
-            float currentSteerRange = Mathf.Lerp(steeringRange, steeringRangeAtMaxSpeed, speedFactor);
-            bool isAccelerating = Mathf.Sign(vInput) == Mathf.Sign(forwardSpeed);
-
-            foreach (Wheel wheel in wheels)
+            if (playerCar)
             {
-                if (wheel.steerable)
+                float vInput = Input.GetAxis("Vertical");
+                float hInput = Input.GetAxis("Horizontal");
+                float forwardSpeed = Vector3.Dot(transform.forward, rb.velocity);
+                float speedFactor = Mathf.InverseLerp(0, maxSpeed, forwardSpeed);
+                float currentMotorTorque = Mathf.Lerp(motorTorque, 0, speedFactor);
+                float currentSteerRange = Mathf.Lerp(steeringRange, steeringRangeAtMaxSpeed, speedFactor);
+                bool isAccelerating = Mathf.Sign(vInput) == Mathf.Sign(forwardSpeed);
+
+                foreach (Wheel wheel in wheels)
                 {
-                    wheel.wCollider.steerAngle = hInput * currentSteerRange;
+                    if (wheel.steerable)
+                    {
+                        wheel.wCollider.steerAngle = hInput * currentSteerRange;
+                    }
+
+                    if (isAccelerating)
+                    {
+                        if (wheel.motorized)
+                        {
+                            wheel.wCollider.motorTorque = vInput * currentMotorTorque * acceleration;
+                        }
+                        wheel.wCollider.brakeTorque = 0;
+                    }
+                    else
+                    {
+                        wheel.wCollider.brakeTorque = Mathf.Abs(vInput) * brakeTorque;
+                        wheel.wCollider.motorTorque = 0;
+                    }
                 }
 
-                if (isAccelerating)
+                if (canJump && !jumpCooldown && Input.GetKeyDown(KeyCode.Space) && (wheels[0].wCollider.isGrounded || wheels[1].wCollider.isGrounded))
+                {
+                    jumpCooldown = true;
+                    rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
+                    Invoke("ClearJumpCooldown", 5);
+                }
+
+                if (canTurbo && !turboCooldown && Input.GetKeyDown(KeyCode.LeftShift))
+                {
+                    turboCooldown = true;
+                    acceleration *= 2;
+                    maxSpeed *= 2;
+                    Invoke("StopTurbo", 1);
+                    Invoke("ClearTurboCooldown", 10);
+                }
+            }
+            else
+            {
+                float forwardSpeed = Vector3.Dot(transform.forward, rb.velocity);
+                float speedFactor = Mathf.InverseLerp(0, maxSpeed, forwardSpeed);
+                float currentMotorTorque = Mathf.Lerp(motorTorque, 0, speedFactor);
+                foreach (Wheel wheel in wheels)
                 {
                     if (wheel.motorized)
                     {
-                        wheel.wCollider.motorTorque = vInput * currentMotorTorque * acceleration;
+                        wheel.wCollider.motorTorque = currentMotorTorque * acceleration;
                     }
-                    wheel.wCollider.brakeTorque = 0;
-                }
-                else
-                {
-                    wheel.wCollider.brakeTorque = Mathf.Abs(vInput) * brakeTorque;
-                    wheel.wCollider.motorTorque = 0;
-                }
-            }
-
-            if(canJump && !jumpCooldown && Input.GetKeyDown(KeyCode.Space) && (wheels[0].wCollider.isGrounded || wheels[1].wCollider.isGrounded))
-            {
-                jumpCooldown = true;
-                rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
-                Invoke("ClearJumpCooldown", 5);
-            }
-
-            if(canTurbo && !turboCooldown && Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                turboCooldown = true;
-                acceleration *= 2;
-                maxSpeed *= 2;
-                Invoke("StopTurbo", 1);
-                Invoke("ClearTurboCooldown", 10);
-            }
-        }
-        else
-        {
-            float forwardSpeed = Vector3.Dot(transform.forward, rb.velocity);
-            float speedFactor = Mathf.InverseLerp(0, maxSpeed, forwardSpeed);
-            float currentMotorTorque = Mathf.Lerp(motorTorque, 0, speedFactor);
-            foreach (Wheel wheel in wheels)
-            {
-                if (wheel.motorized)
-                {
-                    wheel.wCollider.motorTorque =  currentMotorTorque * acceleration;
                 }
             }
         }
@@ -136,5 +142,25 @@ public class Car : MonoBehaviour
     {
         steeringRange = 50;
         steeringRangeAtMaxSpeed = 30;
+    }
+
+    public void StartRace()
+    {
+        canMove = true;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Win")
+        {
+            if (race.GetPlayerPos(this) == 0)
+            {
+                GameManager.manager.uiController.ChangeScene("Victory");
+            }
+            else
+            {
+                GameManager.manager.uiController.ChangeScene("Defeat");
+            }
+        }
     }
 }

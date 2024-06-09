@@ -12,12 +12,4 @@ public class EnemyRacer : Racer
             transform.position += Vector3.forward * speed * Time.deltaTime;
         }
     }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Win")
-        {
-            GameManager.manager.uiController.ChangeScene("Defeat");
-        }
-    }
 }
