@@ -131,6 +131,10 @@ public class Player : Racer
         }
     }
 
+    public void CheatInput(InputAction.CallbackContext context)
+    {
+        GameManager.manager.uiController.ChangeScene("CarLevel");
+    }
     public void MoveInput(InputAction.CallbackContext context)
     {
         if (race.RaceActive)

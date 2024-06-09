@@ -6087,10 +6087,6 @@ MonoBehaviour:
     m_ActionName: Player/Run[/Keyboard/leftCtrl]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: e5e65f27-1fee-43f2-abf8-5233fffe957f
-    m_ActionName: Player/OpenConsole[/Keyboard/c]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 34ad6b33-af19-487b-a7b0-a5a717a1ade5
     m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
@@ -6133,6 +6129,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 8a436708-adc2-4c72-b632-fc2ac18dc91a
     m_ActionName: UI/ReturnToMenu[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1421719659}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: CheatInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 15b84e64-ce09-4030-b7b5-9231ac180c22
+    m_ActionName: Player/Cheat[/Keyboard/p]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -6925,8 +6937,6 @@ MonoBehaviour:
   _musicSlider: {fileID: 1113704245}
   _sfxSlider: {fileID: 664182804}
   _mute: {fileID: 183016979}
-  pause: {fileID: 2020420219}
-  unpause: {fileID: 1608097661}
   _muteOn: {fileID: 1974062218}
   _muteOff: {fileID: 1182564788}
   playerColocations:
@@ -6935,6 +6945,7 @@ MonoBehaviour:
   - {fileID: 1629726753}
   - {fileID: 799464558}
   - {fileID: 1467030127}
+  errorText: {fileID: 0}
 --- !u!1001 &1562997347
 PrefabInstance:
   m_ObjectHideFlags: 0
