@@ -363,6 +363,7 @@
 "Assets/Scripts/AudioManager.cs"
 "Assets/Scripts/Cannon.cs"
 "Assets/Scripts/CannonBall.cs"
+"Assets/Scripts/Car.cs"
 "Assets/Scripts/Enemy.cs"
 "Assets/Scripts/EnemyRacer.cs"
 "Assets/Scripts/GameManager.cs"
@@ -371,8 +372,11 @@
 "Assets/Scripts/PlayerCamera.cs"
 "Assets/Scripts/Race.cs"
 "Assets/Scripts/Racer.cs"
+"Assets/Scripts/Skill.cs"
+"Assets/Scripts/SkillTree.cs"
 "Assets/Scripts/Sound.cs"
 "Assets/Scripts/UIController.cs"
+"Assets/Scripts/Wheel.cs"
 -langversion:9.0
 
 /deterministic

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
 {
-    public Player player;
+    public GameObject player;
     Vector3 relativePosition;
     void Awake()
     {
