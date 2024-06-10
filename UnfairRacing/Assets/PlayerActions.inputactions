@@ -60,9 +60,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "OpenConsole",
+                    "name": "Cheat",
                     "type": "Button",
-                    "id": "e5e65f27-1fee-43f2-abf8-5233fffe957f",
+                    "id": "15b84e64-ce09-4030-b7b5-9231ac180c22",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -314,23 +314,23 @@
                 },
                 {
                     "name": "",
-                    "id": "04beb415-239f-48a6-980e-e9f00a2fcd20",
-                    "path": "<Keyboard>/c",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "OpenConsole",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "5753556f-27a9-48d6-8ffa-50f9a04d1af2",
                     "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dffa5fb9-acd7-4e28-b6c3-33d35c958fc5",
+                    "path": "<Keyboard>/#(P)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cheat",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Car : Racer
 {
@@ -12,19 +13,25 @@ public class Car : Racer
     public float centreOfGravityOffset = -1f;
     public float jumpForce = 8;
     public float acceleration = 1;
+    NavMeshAgent agent;
 
     public bool playerCar;
     public bool canJump;
     public bool jumpCooldown;
     public bool canTurbo;
     public bool turboCooldown;
-
     public bool canMove;
+
+    public LayerMask endLayer;
 
     public Wheel[] wheels;
     Rigidbody rb;
     void Start()
     {
+        if(!playerCar)
+        {
+            agent = GetComponent<NavMeshAgent>();
+        }
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass += Vector3.up * centreOfGravityOffset;
         canMove = false;
@@ -81,9 +88,22 @@ public class Car : Racer
                     Invoke("StopTurbo", 1);
                     Invoke("ClearTurboCooldown", 10);
                 }
+
+                if(Physics.Raycast(transform.position, Vector3.down, 2, endLayer))
+                {
+                    if (race.GetPlayerPos(this) == 0)
+                    {
+                        GameManager.manager.uiController.ChangeScene("Victory");
+                    }
+                    else
+                    {
+                        GameManager.manager.uiController.ChangeScene("Defeat");
+                    }
+                }
             }
             else
             {
+                /*
                 float forwardSpeed = Vector3.Dot(transform.forward, rb.velocity);
                 float speedFactor = Mathf.InverseLerp(0, maxSpeed, forwardSpeed);
                 float currentMotorTorque = Mathf.Lerp(motorTorque, 0, speedFactor);
@@ -93,9 +113,18 @@ public class Car : Racer
                     {
                         wheel.wCollider.motorTorque = currentMotorTorque * acceleration;
                     }
-                }
+                }*/
+                MoveTo(new Vector3(135, 1.5f, 310), 0, maxSpeed);
             }
         }
+    }
+
+    public void MoveTo(Vector3 Destination, float StopDistance, float Speed)
+    {
+        agent.stoppingDistance = StopDistance;
+        agent.speed = Speed;
+        agent.acceleration = Speed * 10;
+        agent.destination = Destination;
     }
 
     void ClearTurboCooldown()
@@ -147,20 +176,5 @@ public class Car : Racer
     public void StartRace()
     {
         canMove = true;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Win")
-        {
-            if (race.GetPlayerPos(this) == 0)
-            {
-                GameManager.manager.uiController.ChangeScene("Victory");
-            }
-            else
-            {
-                GameManager.manager.uiController.ChangeScene("Defeat");
-            }
-        }
     }
 }
